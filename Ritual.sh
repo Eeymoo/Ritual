@@ -24,7 +24,7 @@ cd infernet-deploy/deploy
 read -p "输入Base 主网Https RPC: " rpc_url
 
 # 提示用户输入private_key
-read -p "输入EVM钱包私钥，继续是0x开头结构，建议使用新钱包: " private_key
+read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " private_key
 
 # 提示用户输入设置端口
 read -p "输入端口: " port1
