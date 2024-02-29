@@ -34,7 +34,7 @@ cat > config.json <<EOF
 {
   "log_path": "infernet_node.log",
   "server": {
-    "port": $port"
+    "port": $port
   },
   "chain": {
     "enabled": true,
