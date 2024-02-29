@@ -118,10 +118,14 @@ then
     sudo apt-get update
 
     # 安装 Docker 最新版本
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y 
-  
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y 
+else
+    echo "Docker 已安装。"
+fi
+
+
 # 启动容器
-docker compose up -d
+docker-compose up -d
 
 echo "=========================安装完成======================================"
 echo "请使用cd infernet-deploy/deploy 进入目录后，再使用docker compose logs -f 查询日志 "
