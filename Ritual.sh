@@ -27,14 +27,14 @@ read -p "输入Base 主网RPC: " rpc_url
 read -p "输入EVM钱包私钥，建议使用新钱包: " private_key
 
 # 提示用户输入设置端口
-read -p "输入端口: " port
+read -p "输入端口: " port1
 
 # 使用cat命令将配置写入config.json
 cat > config.json <<EOF
 {
   "log_path": "infernet_node.log",
   "server": {
-    "port": $port
+    "port": $port1
   },
   "chain": {
     "enabled": true,
