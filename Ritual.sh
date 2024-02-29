@@ -118,19 +118,11 @@ then
     sudo apt-get update
 
     # 安装 Docker 最新版本
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y 
 else
     echo "Docker 已安装。"
 fi
 
-# 检查 Docker Compose 是否已安装
-if ! command -v docker-compose &> /dev/null
-then
-    echo "未检测到 Docker Compose，正在安装..."
-    sudo apt install docker-compose -y
-else
-    echo "Docker Compose 已安装。"
-fi
 
 # 启动容器
 docker compose up -d
