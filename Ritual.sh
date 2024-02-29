@@ -21,7 +21,7 @@ git clone https://github.com/ritual-net/infernet-deploy
 cd infernet-deploy/deploy
 
 # 提示用户输入rpc_url
-read -p "输入Base 主网RPC: " rpc_url
+read -p "输入Base 主网Https RPC: " rpc_url
 
 # 提示用户输入private_key
 read -p "输入EVM钱包私钥，建议使用新钱包: " private_key
