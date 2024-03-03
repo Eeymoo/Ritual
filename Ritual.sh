@@ -1,5 +1,37 @@
 #!/bin/bash
 
+
+# 脚本保存路径
+SCRIPT_PATH="$HOME/Ritual.sh"
+
+# 自动设置快捷键的功能
+function check_and_set_alias() {
+    local alias_name="rit"
+    local shell_rc="$HOME/.bashrc"
+
+    # 对于Zsh用户，使用.zshrc
+    if [ -n "$ZSH_VERSION" ]; then
+        shell_rc="$HOME/.zshrc"
+    elif [ -n "$BASH_VERSION" ]; then
+        shell_rc="$HOME/.bashrc"
+    fi
+
+    # 检查快捷键是否已经设置
+    if ! grep -q "$alias_name" "$shell_rc"; then
+        echo "设置快捷键 '$alias_name' 到 $shell_rc"
+        echo "alias $alias_name='bash $SCRIPT_PATH'" >> "$shell_rc"
+        # 添加提醒用户激活快捷键的信息
+        echo "快捷键 '$alias_name' 已设置。请运行 'source $shell_rc' 来激活快捷键，或重新打开终端。"
+    else
+        # 如果快捷键已经设置，提供一个提示信息
+        echo "快捷键 '$alias_name' 已经设置在 $shell_rc。"
+        echo "如果快捷键不起作用，请尝试运行 'source $shell_rc' 或重新打开终端。"
+    fi
+}
+
+# 节点安装功能
+function install_node() {
+
 # 更新系统包列表
 sudo apt update
 
@@ -94,6 +126,7 @@ EOF
 
 echo "Config 文件设置完成"
 
+
 # 安装基本组件
 sudo apt install pkg-config curl build-essential libssl-dev libclang-dev -y
 
@@ -129,3 +162,35 @@ docker compose up -d
 
 echo "=========================安装完成======================================"
 echo "请使用cd infernet-deploy/deploy 进入目录后，再使用docker compose logs -f 查询日志 "
+
+}
+
+# 查看节点日志
+function check_service_status() {
+    cd infernet-deploy/deploy
+    docker compose logs -f
+}
+
+
+
+# 主菜单
+function main_menu() {
+    clear
+    echo "脚本以及教程由推特用户@y95277777 编写，免费开源，请勿相信收费"
+    echo "================================================================"
+    echo "节点社区 Telegram 群组:https://t.me/niuwuriji"
+    echo "节点社区 Telegram 频道:https://t.me/niuwuriji"
+    echo "请选择要执行的操作:"
+    echo "1. 安装节点"
+    echo "2. 查看节点日志"
+    read -p "请输入选项（1-2）: " OPTION
+
+    case $OPTION in
+    1) install_node ;;
+    2) check_service_status ;;
+    *) echo "无效选项。" ;;
+    esac
+}
+
+# 显示主菜单
+main_menu
