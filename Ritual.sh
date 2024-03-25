@@ -157,7 +157,13 @@ then
     sudo apt-get update
 
     # 安装 Docker 最新版本
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y 
+    sudo apt-get install docker-ce docker-ce-cli containerd.io -y 
+    DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+    mkdir -p $DOCKER_CONFIG/cli-plugins
+    curl -SL https://github.com/docker/compose/releases/download/v2.25.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+    sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+    docker compose version
+    
 else
     echo "Docker 已安装。"
 fi
