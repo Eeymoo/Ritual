@@ -38,6 +38,13 @@ function check_and_set_alias() {
 # 节点安装功能
 function install_node() {
 
+# 提示用户输入private_key
+read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " private_key
+
+# 提示用户输入设置端口
+read -p "输入端口: " port1
+
+
 # 更新系统包列表
 sudo apt update
 
@@ -53,40 +60,45 @@ else
 fi
 
 # 克隆 ritual-net 仓库
-git clone https://github.com/ritual-net/infernet-deploy
+git clone https://github.com/ritual-net/infernet-node
 
 # 进入 infernet-deploy 目录
-cd infernet-deploy/deploy
+cd infernet-node
 
-# 提示用户输入rpc_url
-read -p "输入Base 主网Https RPC: " rpc_url
+# 设置标签
+tag="0.1.0"
 
-# 提示用户输入private_key
-read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " private_key
+# 构建镜像
+docker build -t ritualnetwork/infernet-node:$tag .
 
-# 提示用户输入设置端口
-read -p "输入端口: " port1
+# 进入目录
+cd deploy
 
 # 使用cat命令将配置写入config.json
 cat > config.json <<EOF
 {
   "log_path": "infernet_node.log",
+  "manage_containers": true,
   "server": {
     "port": $port1
   },
   "chain": {
     "enabled": true,
     "trail_head_blocks": 5,
-    "rpc_url": "$rpc_url",
+    "rpc_url": "https://base-rpc.publicnode.com",
     "coordinator_address": "0x8D871Ef2826ac9001fB2e33fDD6379b6aaBF449c",
     "wallet": {
       "max_gas_limit": 5000000,
       "private_key": "$private_key"
     }
   },
+  "snapshot_sync": {
+    "sleep": 1.5,
+    "batch_size": 200
+  },
   "docker": {
-    "username": "",
-    "password": ""
+    "username": "username",
+    "password": "password"
   },
   "redis": {
     "host": "redis",
@@ -96,35 +108,15 @@ cat > config.json <<EOF
   "startup_wait": 1.0,
   "containers": [
     {
-      "id": "service-1",
-      "image": "org1/image1:tag1",
-      "description": "Container 1 description",
+      "id": "hello-world",
+      "image": "ritualnetwork/hello-world-infernet:latest",
       "external": true,
-      "port": "4999",
-      "allowed_ips": ["XX.XX.XX.XXX", "XX.XX.XX.XXX"],
-      "allowed_addresses": [""],
-      "allowed_delegate_addresses": [""],
+      "port": "3000",
+      "allowed_delegate_addresses": [],
+      "allowed_addresses": [],
+      "allowed_ips": [],
       "command": "--bind=0.0.0.0:3000 --workers=2",
-      "env": {
-        "KEY1": "VALUE1",
-        "KEY2": "VALUE2"
-      },
-      "gpu": true
-    },
-    {
-      "id": "service-2",
-      "image": "org2/image2:tag2",
-      "description": "Container 2 description",
-      "external": false,
-      "port": "4998",
-      "allowed_ips": ["XX.XX.XX.XXX", "XX.XX.XX.XXX"],
-      "allowed_addresses": ["0x..."],
-      "allowed_delegate_addresses": ["0x..."],
-      "command": "--bind=0.0.0.0:3000 --workers=2",
-      "env": {
-        "KEY3": "VALUE3",
-        "KEY4": "VALUE4"
-      }
+      "env": {}
     }
   ]
 }
@@ -167,7 +159,6 @@ then
 else
     echo "Docker 已安装。"
 fi
-
 
 # 启动容器
 docker compose up -d
