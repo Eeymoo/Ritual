@@ -44,6 +44,9 @@ read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " p
 # 提示用户输入设置端口
 read -p "输入端口: " port1
 
+# 提示用户输入设置端口
+read -p "输入Docker hub 用户名: " username
+read -p "输入Docker hub 密码: " password
 
 # 更新系统包列表
 sudo apt update
@@ -97,8 +100,8 @@ cat > config.json <<EOF
     "batch_size": 200
   },
   "docker": {
-    "username": "username",
-    "password": "password"
+    "username": "$username",
+    "password": "$password"
   },
   "redis": {
     "host": "redis",
