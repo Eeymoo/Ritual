@@ -173,7 +173,7 @@ echo "请使用cd infernet-deploy/deploy 进入目录后，再使用docker compo
 
 # 查看节点日志
 function check_service_status() {
-    cd infernet-deploy/deploy
+    cd infernet-node/deploy
     docker compose logs -f
 }
 
