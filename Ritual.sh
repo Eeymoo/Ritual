@@ -69,7 +69,7 @@ git clone https://github.com/ritual-net/infernet-node
 cd infernet-node
 
 # 设置标签
-tag="0.2.0"
+tag="v1.0.0"
 
 # 构建镜像
 docker build -t ritualnetwork/infernet-node:$tag .
