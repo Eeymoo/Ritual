@@ -40,6 +40,7 @@ function install_node() {
 
 # 提示用户输入private_key
 read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " private_key
+read -p "输入对应钱包地址，必须是0x开头，建议使用新钱包: " wallet_address
 
 # 提示用户输入设置端口
 read -p "输入端口: " port1
@@ -83,25 +84,31 @@ cat > config.json <<EOF
   "log_path": "infernet_node.log",
   "manage_containers": true,
   "server": {
-    "port": $port1
+    "port": 4000,
+    "rate_limit": {
+      "num_requests": 100,
+      "period": 100
+    }
   },
   "chain": {
     "enabled": true,
     "trail_head_blocks": 5,
     "rpc_url": "https://base-rpc.publicnode.com",
-    "coordinator_address": "0x8D871Ef2826ac9001fB2e33fDD6379b6aaBF449c",
+    "registry_address": "0x3B1554f346DFe5c482Bb4BA31b880c1C18412170",
     "wallet": {
       "max_gas_limit": 5000000,
-      "private_key": "$private_key"
+      "private_key": "$private_key",
+      "payment_address": "$wallet_address",
+      "allowed_sim_errors": ["not enough balance"]
+    },
+    "snapshot_sync": {
+      "sleep": 1.5,
+      "batch_size": 200
     }
   },
-  "snapshot_sync": {
-    "sleep": 1.5,
-    "batch_size": 200
-  },
   "docker": {
-    "username": "$username",
-    "password": "$password"
+    "username": "username",
+    "password": "password"
   },
   "redis": {
     "host": "redis",
@@ -119,7 +126,13 @@ cat > config.json <<EOF
       "allowed_addresses": [],
       "allowed_ips": [],
       "command": "--bind=0.0.0.0:3000 --workers=2",
-      "env": {}
+      "env": {},
+      "volumes": [],
+      "accepted_payments": {
+        "0x0000000000000000000000000000000000000000": 1000000000000000000,
+        "0x59F2f1fCfE2474fD5F0b9BA1E73ca90b143Eb8d0": 1000000000000000000
+      },
+      "generates_proofs": false
     }
   ]
 }
