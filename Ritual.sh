@@ -41,11 +41,12 @@ function install_node() {
 # 提示用户输入private_key
 read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " private_key
 read -p "输入对应钱包地址，必须是0x开头，建议使用新钱包: " wallet_address
-
+# 提示用户输入RPC地址
+read -p "输入RPC，必须是Base链，推荐使用ZAN：" rpc_address
 # 提示用户输入设置端口
 read -p "输入端口: " port1
 
-# 提示用户输入设置端口
+# 提示用户输入Docker Hub
 read -p "输入Docker hub 用户名: " username
 read -p "输入Docker hub 密码: " password
 
@@ -93,7 +94,7 @@ cat > config.json <<EOF
   "chain": {
     "enabled": true,
     "trail_head_blocks": 5,
-    "rpc_url": "https://base-rpc.publicnode.com",
+    "rpc_url": "$rpc_address",
     "registry_address": "0x3B1554f346DFe5c482Bb4BA31b880c1C18412170",
     "wallet": {
       "max_gas_limit": 5000000,
