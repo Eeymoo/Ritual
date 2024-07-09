@@ -42,7 +42,7 @@ function install_node() {
 read -p "输入EVM 钱包私钥，必须是0x开头，建议使用新钱包: " private_key
 read -p "输入对应钱包地址，必须是0x开头，建议使用新钱包: " wallet_address
 # 提示用户输入RPC地址
-read -p "输入RPC，必须是Base链，推荐使用ZAN: " rpc_address
+read -p "输入RPC，必须是Base链: " rpc_address
 # 提示用户输入设置端口
 read -p "输入端口: " port1
 
